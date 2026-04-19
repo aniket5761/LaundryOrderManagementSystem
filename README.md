@@ -436,13 +436,286 @@ GET /api/orders/dashboard/stats
 - Multi-stage Docker builds for smaller images
 - Efficient React component re-renders
 
-## 🚧 Future Enhancements
+## � Troubleshooting
 
-- Payment integration
-- Email notifications
-- Advanced reporting and analytics
-- Mobile app support
-- Real-time WebSocket updates
-- Barcode/QR code scanning
-- Customer portal
+### Docker Issues
 
+**Container name already in use error:**
+```bash
+# Remove all containers and volumes
+docker-compose down -v
+
+# Rebuild from scratch
+docker-compose up --build
+```
+
+**Port already in use (8080, 5173, 5432):**
+```bash
+# Find process using port 8080
+lsof -i :8080
+
+# Kill the process
+kill -9 <PID>
+
+# Or change port in docker-compose.yml
+```
+
+**Database connection timeout:**
+```bash
+# Check if PostgreSQL container is running
+docker ps
+
+# View logs
+docker logs laundry_postgres
+
+# Restart PostgreSQL
+docker restart laundry_postgres
+```
+
+### Backend Issues
+
+**Maven build fails:**
+```bash
+# Clean build
+mvn clean install
+
+# Update dependencies
+mvn clean install -U
+```
+
+**Cannot connect to PostgreSQL:**
+- Ensure PostgreSQL is running: `docker-compose ps`
+- Check credentials in `application.yml`
+- Verify database exists: `psql -U laundry_user -d laundry_db`
+
+**JWT token expired:**
+- The token is valid for 24 hours by default
+- Modify expiration in `application.yml`: `jwt.expiration`
+
+### Frontend Issues
+
+**Blank page or errors:**
+```bash
+# Clear node modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear Vite cache
+rm -rf .vite
+
+# Restart dev server
+npm run dev
+```
+
+**API calls failing (CORS error):**
+- Ensure backend is running on port 8080
+- Check `VITE_API_BASE_URL` in `.env`
+- CORS is already configured in backend
+
+**Styling not applied:**
+- Clear browser cache (Ctrl+Shift+Delete)
+- Hard refresh (Ctrl+F5)
+- Restart Vite server
+
+---
+
+## 🧪 Testing the Application
+
+### Manual Testing Steps
+
+#### 1. User Registration & Login
+```bash
+# Signup
+curl -X POST http://localhost:8080/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "Test@123"
+  }'
+
+# Login
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "Test@123"
+  }'
+```
+
+#### 2. Create Orders
+```bash
+# Simple order
+curl -X POST http://localhost:8080/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customerName": "Test Customer",
+    "phoneNumber": "9876543210",
+    "items": [
+      {"garmentType": "Shirt", "quantity": 1, "pricePerItem": 100}
+    ]
+  }'
+```
+
+#### 3. Test All Filters
+```bash
+# Filter by status
+curl "http://localhost:8080/api/orders?status=RECEIVED"
+
+# Search by name
+curl "http://localhost:8080/api/orders?customerName=Test"
+
+# Search by phone
+curl "http://localhost:8080/api/orders?phoneNumber=9876543210"
+
+# Search by garment
+curl "http://localhost:8080/api/orders?garmentType=Shirt"
+```
+
+See **[API_ENDPOINTS.md](./API_ENDPOINTS.md)** for comprehensive testing scenarios.
+
+---
+
+## 🚢 Deployment
+
+### Deploy to Production
+
+#### Using Docker
+
+1. **Build Production Images**
+   ```bash
+   docker-compose -f docker-compose.yml build
+   ```
+
+2. **Push to Registry** (e.g., Docker Hub)
+   ```bash
+   docker tag laundryordermanagementsystem-backend username/laundry-backend:1.0
+   docker tag laundryordermanagementsystem-frontend username/laundry-frontend:1.0
+   docker push username/laundry-backend:1.0
+   docker push username/laundry-frontend:1.0
+   ```
+
+3. **Deploy on Server**
+   ```bash
+   # SSH to server
+   ssh user@server
+   
+   # Clone repository
+   git clone <repo-url>
+   cd LaundryOrderManagementSystem
+   
+   # Set environment variables
+   export POSTGRES_PASSWORD=secure_password
+   export JWT_SECRET=your-secret-key
+   
+   # Start services
+   docker-compose up -d
+   ```
+
+#### Environment Variables for Production
+
+Create `.env` file:
+```env
+# PostgreSQL
+POSTGRES_DB=laundry_db
+POSTGRES_USER=laundry_user
+POSTGRES_PASSWORD=secure_password_here
+
+# JWT
+JWT_SECRET=your-very-long-secret-key-here
+JWT_EXPIRATION=86400000
+
+# App
+ENVIRONMENT=production
+DEBUG=false
+```
+
+---
+
+## 📚 Documentation
+
+- **API Endpoints**: [API_ENDPOINTS.md](./API_ENDPOINTS.md)
+- **Project Structure**: See above
+- **Deployment Guide**: See Deployment section
+
+## 💡 Best Practices
+
+### Code Quality
+- Follow Spring Boot conventions
+- Use DTOs for API responses
+- Implement comprehensive exception handling
+- Write meaningful commit messages
+
+### Security
+- Keep dependencies updated
+- Use environment variables for secrets
+- Implement input validation
+- Use HTTPS in production
+
+### Performance
+- Use database indexes
+- Implement caching where appropriate
+- Optimize queries
+- Monitor application metrics
+
+## 📞 Support & Contribution
+
+### Found a Bug?
+1. Check [Troubleshooting](#-troubleshooting) section
+2. Check existing issues
+3. Create a new issue with:
+   - Steps to reproduce
+   - Expected behavior
+   - Actual behavior
+   - Screenshots/logs
+
+### Want to Contribute?
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit changes: `git commit -am 'Add new feature'`
+4. Push to branch: `git push origin feature/your-feature`
+5. Submit a pull request
+
+### Code Style
+- Follow Spring Boot naming conventions
+- Use meaningful variable names
+- Add comments for complex logic
+- Keep functions small and focused
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see LICENSE file for details.
+
+---
+
+## 👨‍💻 Author
+
+Created as a full-stack laundry management system demonstration project.
+
+---
+
+## 🙏 Acknowledgments
+
+- Spring Boot framework documentation
+- React and Vite communities
+- PostgreSQL database
+- Docker and containerization best practices
+
+---
+
+## 📞 Quick Links
+
+| Resource | Link |
+|----------|------|
+| API Documentation | [API_ENDPOINTS.md](./API_ENDPOINTS.md) |
+| Frontend | [http://localhost:5173](http://localhost:5173) |
+| Backend | [http://localhost:8080](http://localhost:8080) |
+| Database | localhost:5432 |
+| Repository | [GitHub](https://github.com/) |
+
+---
+
+**Last Updated**: April 19, 2026  
+**Version**: 1.0.0
