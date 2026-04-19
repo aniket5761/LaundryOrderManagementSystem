@@ -1,0 +1,220 @@
+.orders-list {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.orders-list h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 0.5rem;
+}
+
+.filter-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  white-space: nowrap;
+  color: #333;
+}
+
+.filter-group select,
+.filter-group input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.orders-table {
+  overflow-x: auto;
+}
+
+.orders-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.orders-table thead {
+  background-color: #f9f9f9;
+  border-bottom: 2px solid #ddd;
+}
+
+.orders-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.orders-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  color: #555;
+}
+
+.orders-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.order-id {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #666;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+
+.status-RECEIVED {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-PROCESSING {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-READY {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-DELIVERED {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.items-list {
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.items-list li {
+  color: #666;
+  padding: 0.25rem 0;
+}
+
+.status-update {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.status-update select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.btn-update {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  background-color: #667eea;
+  color: white;
+  white-space: nowrap;
+}
+
+.btn-update:hover {
+  background-color: #5568d3;
+}
+
+.btn-update:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .orders-table {
+    font-size: 0.9rem;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .order-id {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .orders-list {
+    padding: 1.5rem;
+  }
+
+  .filter-section {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group label {
+    white-space: normal;
+  }
+
+  .orders-table table {
+    font-size: 0.85rem;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 0.5rem;
+  }
+
+  .status-update {
+    flex-direction: column;
+  }
+}
